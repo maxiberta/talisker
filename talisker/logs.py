@@ -30,7 +30,8 @@ import logging
 import sys
 import os
 
-from .request_context import request_context
+from talisker.request_context import request_context
+from talisker import raven
 
 __all__ = [
     'configure',
@@ -238,6 +239,13 @@ class StructuredLogger(logging.Logger):
         # store extra explicitly for StructuredFormatter to use
         record._structured = structured
         return record
+
+    def _log(self, level, msg, *args, **kwargs):
+        # we never want sentry to capture DEBUG logs in its breadcrumbs, as
+        # they may be sensitive
+        if level > logging.DEBUG:
+            raven.record_log_breadcrumb(self, level, msg, *args, **kwargs)
+        super(StructuredLogger, self)._log(level, msg, *args, **kwargs)
 
 ROOT = StructuredLogger('root', logging.NOTSET)
 

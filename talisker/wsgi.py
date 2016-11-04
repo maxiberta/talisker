@@ -29,6 +29,7 @@ from . import endpoints
 from . import statsd
 from . import requests
 from . import revision
+from . import raven
 
 
 __all__ = [
@@ -74,6 +75,8 @@ def wrap(app):
     wrapped = set_headers(wrapped, {'X-VCS-Revision': revision.header()})
     # clean up request context on the way out
     wrapped = request_context.cleanup_middleware(wrapped)
+    wrapped = raven.get_middleware(wrapped)
+
     wrapped._talisker_wrapped = True
     wrapped._talisker_original_app = app
     return wrapped
