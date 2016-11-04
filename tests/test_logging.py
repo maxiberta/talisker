@@ -264,7 +264,7 @@ def test_configure_twice():
     handlers = logging.getLogger().handlers
     talisker_handlers = [h for h in handlers
                          if hasattr(h, '_talisker_handler')]
-    assert len(talisker_handlers) == 1
+    assert len(talisker_handlers) == 2  # root and sentry
 
 
 def test_configure_debug_log_bad_file(capsys):
