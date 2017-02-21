@@ -20,6 +20,7 @@ install_requires = [
     'statsd>=3.2.1,<4.0',
     'requests>=2.10.0,<3.0',
     'raven>=5.3.1,<6.0',
+    'blinker>=1.0,<1.5',
     'future>=0.15.2,<0.16',
 ]
 
